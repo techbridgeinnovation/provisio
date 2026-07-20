@@ -57,15 +57,16 @@
   .stat .l { font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--slate-faint); font-weight:650; margin-top:7px; }
 
   /* tabs */
-  nav.tabs { position:sticky; top:0; z-index:20; background:color-mix(in srgb,var(--paper) 88%,transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
-  .tabs-scroll { max-width:var(--measure); margin:0 auto; padding:0 clamp(10px,4.5vw,52px); display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; }
-  .tabs-scroll::-webkit-scrollbar { display:none; }
-  .tabbtn { flex:0 0 auto; appearance:none; background:none; border:0; border-bottom:2px solid transparent; padding:14px 14px 12px; font-family:system-ui,sans-serif; font-size:.82rem; font-weight:560; color:var(--slate); cursor:pointer; white-space:nowrap; letter-spacing:.005em; transition:color .15s; }
-  .tabbtn:hover { color:var(--ink); }
-  .tabbtn[aria-selected="true"] { color:var(--teal-deep); border-bottom-color:var(--teal); font-weight:660; }
-  .tabbtn .tn { font-family:ui-monospace,Menlo,monospace; font-size:.72rem; color:var(--slate-faint); margin-right:6px; }
-  .tabbtn[aria-selected="true"] .tn { color:var(--teal); }
-  .tabbtn:focus-visible { outline:2px solid var(--teal); outline-offset:-2px; border-radius:4px; }
+  nav.tabs { position:sticky; top:0; z-index:20; background:color-mix(in srgb,var(--paper) 90%,transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .tablist { max-width:var(--measure); margin:0 auto; padding:12px clamp(14px,4.5vw,52px); display:flex; flex-wrap:wrap; gap:8px; }
+  .tabbtn { appearance:none; display:inline-flex; align-items:center; gap:7px; background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:7px 13px; font-family:system-ui,sans-serif; font-size:.8rem; font-weight:560; color:var(--slate); cursor:pointer; white-space:nowrap; transition:background .15s,border-color .15s,color .15s; }
+  .tabbtn:hover { color:var(--ink); border-color:var(--line-strong); }
+  .tabbtn[aria-selected="true"] { color:#fff; background:var(--teal-deep); border-color:var(--teal-deep); font-weight:640; }
+  :root[data-theme="dark"] .tabbtn[aria-selected="true"] { color:#04191b; background:var(--teal); border-color:var(--teal); }
+  .tabbtn .tn { font-family:ui-monospace,Menlo,monospace; font-size:.7rem; color:var(--slate-faint); }
+  .tabbtn[aria-selected="true"] .tn { color:rgba(255,255,255,.72); }
+  :root[data-theme="dark"] .tabbtn[aria-selected="true"] .tn { color:rgba(4,25,27,.6); }
+  .tabbtn:focus-visible { outline:2px solid var(--teal); outline-offset:2px; }
 
   /* panels */
   .tab { display:none; }
@@ -281,7 +282,7 @@
   </header>
 
   <nav class="tabs" aria-label="Sections">
-    <div class="tabs-scroll" role="tablist">
+    <div class="tablist" role="tablist">
       <button class="tabbtn" role="tab" aria-selected="true"  data-tab="overview"><span class="tn">01</span>Overview</button>
       <button class="tabbtn" role="tab" aria-selected="false" data-tab="jobs"><span class="tn">02</span>The Five Jobs</button>
       <button class="tabbtn" role="tab" aria-selected="false" data-tab="ingestion"><span class="tn">03</span>Data Ingestion</button>
@@ -293,6 +294,7 @@
       <button class="tabbtn" role="tab" aria-selected="false" data-tab="timeline"><span class="tn">09</span>Timeline</button>
       <button class="tabbtn" role="tab" aria-selected="false" data-tab="commercials"><span class="tn">10</span>Commercials</button>
       <button class="tabbtn" role="tab" aria-selected="false" data-tab="questions"><span class="tn">11</span>Open Questions</button>
+      <button class="tabbtn" role="tab" aria-selected="false" data-tab="market"><span class="tn">12</span>Competitive Landscape</button>
     </div>
   </nav>
 
@@ -938,6 +940,124 @@
           <h4><span class="qi">Q6</span> When do rules-based recs give way to AI?<span class="sev sev-biz">Roadmap</span></h4>
           <p>MVP keeps standardization/consolidation logic rules-based (transparent, defensible to a clinical committee). The trigger to introduce AI-driven recommendations — and the trust/audit story around them — is a Phase-2+ decision to make deliberately, not drift into.</p>
         </div>
+      </div>
+    </section>
+
+    <!-- ===== 12 COMPETITIVE LANDSCAPE ===== -->
+    <section class="tab" id="tab-market">
+      <style>
+        .capscroll { overflow-x:auto; border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); margin-top:6px; }
+        table.capmat { min-width:860px; }
+        table.capmat th.cap,table.capmat td.cap { text-align:center; width:52px; }
+        table.capmat td.cap { font-family:system-ui,sans-serif; font-weight:700; font-size:1rem; }
+        .m-full{ color:var(--emerald); } .m-part{ color:var(--amber); } .m-none{ color:var(--slate-faint); }
+        .tgt { font-size:.68rem; font-weight:700; letter-spacing:.02em; padding:2px 8px; border-radius:5px; white-space:nowrap; }
+        .tgt-lg{ background:var(--surface-2); color:var(--slate); } .tgt-all{ background:var(--emerald-wash); color:var(--emerald); } .tgt-na{ background:var(--teal-wash); color:var(--teal-deep); }
+        tr.provisio td { background:var(--teal-wash); }
+        tr.provisio td.k .nn { color:var(--teal-deep); }
+        .srclist { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:10px; }
+        .srclist a { font-size:.8rem; color:var(--slate); text-decoration:none; border-bottom:1px solid var(--line-strong); }
+        .srclist a:hover { color:var(--teal); }
+      </style>
+      <div class="sec-head">
+        <span class="eyebrow">12 · Competitive Landscape</span>
+        <h2>Does this already exist? Yes — and the market is crowded</h2>
+        <p class="lede">A multi-source review confirms this is an established, actively-consolidating market — not whitespace. All five capabilities ship today across four vendor categories. The real opportunity is narrower and sharper than "no one does this": it's about <em>who</em> is served.</p>
+      </div>
+
+      <div class="callout note">
+        <div class="icon">i</div>
+        <div>
+          <h3>The honest verdict</h3>
+          <p>Don't pitch Provisio as a novel capability — every one of the five jobs is a commodity feature offered by incumbents. Pitch it as <strong>better-fit for an underserved tier</strong>: analytics-grade spend intelligence, priced and packaged for non-acute and smaller facilities, with file-first onboarding that doesn't assume enterprise EHR/ERP integration.</p>
+        </div>
+      </div>
+
+      <h3 style="font-family:Georgia,serif; font-size:1.2rem; margin:28px 0 6px;">Capability &amp; target matrix</h3>
+      <div class="capscroll">
+        <table class="capmat">
+          <thead>
+            <tr>
+              <th>Vendor</th><th>Category</th><th>Primarily targets</th>
+              <th class="cap">Visi&shy;bility</th><th class="cap">Stan&shy;dard.</th><th class="cap">Bench&shy;mark</th><th class="cap">TCO</th><th class="cap">Savings ROI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="k">Vizient Supply Analytics</td><td>GPO analytics</td><td><span class="tgt tgt-lg">Large IDNs*</span></td><td class="cap m-full">●</td><td class="cap m-part">◐</td><td class="cap m-full">●</td><td class="cap m-part">◐</td><td class="cap m-part">◐</td></tr>
+            <tr><td class="k">Premier · PINC AI</td><td>GPO analytics</td><td><span class="tgt tgt-lg">Systems / members</span></td><td class="cap m-full">●</td><td class="cap m-part">◐</td><td class="cap m-full">●</td><td class="cap m-part">◐</td><td class="cap m-full">●</td></tr>
+            <tr><td class="k">HealthTrust</td><td>GPO analytics</td><td><span class="tgt tgt-lg">Large IDNs</span></td><td class="cap m-part">◐</td><td class="cap m-full">●</td><td class="cap m-full">●</td><td class="cap m-part">◐</td><td class="cap m-part">◐</td></tr>
+            <tr><td class="k">Curvo <span style="color:var(--slate-faint); font-weight:400;">(+ BroadJump)</span></td><td>Independent analytics</td><td><span class="tgt tgt-lg">Health systems</span></td><td class="cap m-full">●</td><td class="cap m-full">●</td><td class="cap m-full">●</td><td class="cap m-part">◐</td><td class="cap m-part">◐</td></tr>
+            <tr><td class="k">symplr</td><td>Value analysis / CDS</td><td><span class="tgt tgt-lg">Hospitals / systems</span></td><td class="cap m-full">●</td><td class="cap m-full">●</td><td class="cap m-part">◐</td><td class="cap m-part">◐</td><td class="cap m-full">●</td></tr>
+            <tr><td class="k">GHX <span style="color:var(--slate-faint); font-weight:400;">(Lumere)</span></td><td>Analytics / EHR-adjacent</td><td><span class="tgt tgt-lg">Systems</span></td><td class="cap m-full">●</td><td class="cap m-full">●</td><td class="cap m-part">◐</td><td class="cap m-part">◐</td><td class="cap m-part">◐</td></tr>
+            <tr><td class="k">Workday Healthcare SCM</td><td>ERP suite</td><td><span class="tgt tgt-lg">Gartner Top-25</span></td><td class="cap m-full">●</td><td class="cap m-none">○</td><td class="cap m-none">○</td><td class="cap m-none">○</td><td class="cap m-part">◐</td></tr>
+            <tr><td class="k">Veradigm Supply Chain</td><td>ERP suite</td><td><span class="tgt tgt-all">All sizes ✓</span></td><td class="cap m-full">●</td><td class="cap m-none">○</td><td class="cap m-part">◐</td><td class="cap m-none">○</td><td class="cap m-part">◐</td></tr>
+            <tr><td class="k">MedProcure · SupplyLasso · Hybrent</td><td>Procurement / PO</td><td><span class="tgt tgt-na">Non-acute / ASC</span></td><td class="cap m-part">◐</td><td class="cap m-none">○</td><td class="cap m-none">○</td><td class="cap m-none">○</td><td class="cap m-none">○</td></tr>
+            <tr class="provisio"><td class="k"><span class="nn">Provisio</span> <span style="font-weight:400; font-size:.8rem; color:var(--teal-deep);">(proposed)</span></td><td>Analytics · file-first</td><td><span class="tgt tgt-na">Non-acute &amp; small</span></td><td class="cap m-full">●</td><td class="cap m-full">●</td><td class="cap m-part">◐<sup>P2</sup></td><td class="cap m-part">◐</td><td class="cap m-full">●</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="legend" style="margin-top:12px;">
+        <span><span class="m-full" style="font-weight:700;">●</span> full</span>
+        <span><span class="m-part" style="font-weight:700;">◐</span> partial</span>
+        <span><span class="m-none" style="font-weight:700;">○</span> none / unclear</span>
+        <span style="color:var(--slate-faint);">Coverage read from vendors' own marketing; not independently audited.</span>
+      </div>
+      <p style="font-size:.8rem; color:var(--slate-faint); margin-top:8px;">* Vizient also ships a dedicated <b>Non-Acute Solutions</b> product. <b>Valify</b> owns healthcare <em>purchased-services</em> spend (IT, facilities) — a proven adjacent niche, but explicitly <em>not</em> med-surg supplies, so it's excluded from the matrix.</p>
+
+      <h3 style="font-family:Georgia,serif; font-size:1.2rem; margin:30px 0 12px;">The four categories</h3>
+      <div class="grid2">
+        <div class="card"><h4>1 · GPO in-house analytics <span class="tag" style="background:var(--surface-2); color:var(--slate);">dominant</span></h4><p style="font-size:.87rem;">The three big group-purchasing orgs — <b>Vizient</b>, <b>Premier/PINC AI</b>, <b>HealthTrust</b> — run analytics on massive proprietary datasets (Vizient cites $201B+ spend across 3,100+ systems). Their moat is the data. Aimed at large IDNs.</p></div>
+        <div class="card"><h4>2 · Independent analytics <span class="tag" style="background:var(--teal-wash); color:var(--teal-deep);">closest match</span></h4><p style="font-size:.87rem;"><b>Curvo</b> (merged with BroadJump, Sept 2025) is GPO-agnostic and normalizes fragmented supplier data into benchmarks — claims to track ~40% of US non-labor spend across 2,500+ facilities. This is essentially the Provisio concept, already at scale.</p></div>
+        <div class="card"><h4>3 · Value analysis / CDS</h4><p style="font-size:.87rem;"><b>symplr</b> (Value Analysis + Spend Analysis) does evidence-based product comparison, standardization and projected-savings tracking across 400k+ SKUs. Directly covers the standardization + savings jobs.</p></div>
+        <div class="card"><h4>4 · ERP / procurement-adjacent</h4><p style="font-size:.87rem;"><b>Workday</b> (big systems) and <b>Veradigm</b> (all sizes) bundle spend analytics into the ERP; <b>GHX</b> adds Lumere analytics + Epic integration. Small-facility procurement tools (<b>MedProcure</b>, <b>SupplyLasso</b> at $75–225/mo, <b>Hybrent</b>) exist but are PO/inventory tools, not deep analytics.</p></div>
+      </div>
+
+      <hr class="h-rule">
+      <h3 style="font-family:Georgia,serif; font-size:1.3rem; margin-bottom:12px;">Where the real opening is</h3>
+      <div class="callout warn">
+        <div class="icon">!</div>
+        <div>
+          <h3>The non-acute lane is narrower than the brief assumes</h3>
+          <p>The plan's bet is "target smaller / non-acute facilities." Two findings soften that as clean whitespace: incumbents <strong>already contest the lane</strong> (Veradigm markets to all sizes; Vizient has a Non-Acute product), and adversarial verification <strong>refuted</strong> the claim of a clean gap at Premier and HealthTrust. And a cluster of startups (<strong>MedProcure, SupplyLasso, Hybrent</strong>) already targets small facilities.</p>
+          <p>But those small-facility players are <strong>procurement / purchase-order tools, not analytics engines</strong> — the benchmarking / standardization / TCO depth lives with the enterprise vendors aimed at big systems.</p>
+        </div>
+      </div>
+      <div class="callout calm">
+        <div class="icon">✓</div>
+        <div>
+          <h3>The defensible wedge</h3>
+          <p><strong>Analytics-grade spend intelligence — visibility, standardization savings, TCO, ROI — packaged and priced for non-acute and smaller hospitals that can't justify a Vizient / Curvo / symplr enterprise contract.</strong> The edge isn't features (all commodity now); it's segment focus, price point, and <strong>file-first onboarding</strong> — enterprise tools assume EHR/ERP integrations that small facilities don't have.</p>
+        </div>
+      </div>
+
+      <h3 style="font-family:Georgia,serif; font-size:1.15rem; margin:28px 0 12px;">Strategic implications</h3>
+      <div class="grid3">
+        <div class="card"><h4>Reframe the pitch</h4><p style="font-size:.86rem; margin:0;">Not "a tool that doesn't exist" — a right-sized tool for a tier the incumbents under-serve. Lead with fit and price, not novelty.</p></div>
+        <div class="card"><h4>Benchmarking is the weak leg</h4><p style="font-size:.86rem; margin:0;">Peer benchmarking depends on data network effects the GPOs and Curvo already own — a cold-start problem. Launch on internal visibility + standardization + savings (needs only the customer's own data); make peer benchmarking a Phase-2 feature contingent on data scale.</p></div>
+        <div class="card"><h4>Onboarding is the moat you can build</h4><p style="font-size:.86rem; margin:0;">A small facility's pain is that enterprise tools are too heavy to adopt. File-first ingestion + a resolver that self-improves is a real, defensible advantage at this tier.</p></div>
+      </div>
+
+      <div class="callout note" style="margin-top:22px;">
+        <div class="icon">i</div>
+        <div>
+          <h3>Research caveats</h3>
+          <p>Capability evidence is from vendors' own marketing pages (fine for "does X exist," not independently audited). Scale figures (Curvo's 40%, Vizient's $201B) are self-reported. The market is consolidating fast — Curvo/BroadJump merged Sept 2025; GHX acquired Syft and Lumere — so names and ownership shift. The small-facility startup names had lighter verification than the enterprise players. Actual adoption and pricing among sub-100-bed / non-acute facilities was not established for any vendor.</p>
+        </div>
+      </div>
+
+      <h3 style="font-family:Georgia,serif; font-size:1.05rem; margin:26px 0 6px;">Primary sources</h3>
+      <div class="srclist">
+        <a href="https://www.vizientinc.com/what-we-do/supply-chain/supplies-benchmarking" target="_blank" rel="noopener">Vizient Supply Analytics</a>
+        <a href="https://www.pinc-ai.com/products/margin-improvement/service-line-analytics/" target="_blank" rel="noopener">Premier / PINC AI</a>
+        <a href="https://healthtrustpg.com/supply-chain/" target="_blank" rel="noopener">HealthTrust</a>
+        <a href="https://www.gocurvo.com/" target="_blank" rel="noopener">Curvo</a>
+        <a href="https://www.symplr.com/solutions/supply-chain" target="_blank" rel="noopener">symplr</a>
+        <a href="https://www.workday.com/en-us/solutions/industries/healthcare/supply-chain-management-for-healthcare.html" target="_blank" rel="noopener">Workday Healthcare SCM</a>
+        <a href="https://veradigm.com/supply-chain/" target="_blank" rel="noopener">Veradigm Supply Chain</a>
+        <a href="https://www.getvalify.com/" target="_blank" rel="noopener">Valify</a>
+        <a href="https://www.vizient.com/products/vizient-non-acute-solutions" target="_blank" rel="noopener">Vizient Non-Acute</a>
+        <a href="https://medprocure.com/procurement-software-non-acute-healthcare-providers/" target="_blank" rel="noopener">MedProcure</a>
+        <a href="https://supplylasso.com/blog/ambulatory-surgery-center-procurement-software" target="_blank" rel="noopener">SupplyLasso</a>
       </div>
     </section>
 
